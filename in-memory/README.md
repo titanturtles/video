@@ -1,0 +1,36 @@
+# Run shellcode without a file in harddrive
+
+One of the popular ways of defending against malicious code running is to make the harddrive media read-only. However, in this example, we demonstrated that the pure in-memory shellcode execution can be accomplished very easily. So, read-only media is not totally immune to malicious code execution.
+ 
+1. Running a in-memory python code is quite easy.
+
+We can retriebe a base64 encoded python program by doing the following
+
+```bash
+$ cat run1.py | base64 -w0; echo
+cHJpbnQoIkkgYW0gcnVubmluZyBpbiBwdXJlIG1lbW9yeSIpCg==
+```
+
+Then, we can execute this base64 encoded python program in a bash shell
+
+```bash
+$ echo "import base64; exec(base64.b64decode('cHJpbnQoIkkgYW0gcnVubmluZyBpbiBwdXJlIG1lbW9yeSIpCg=='))" | python3
+I am running in pure memory
+```
+
+2. Now, let's run a shellcode inside the python code
+
+Generate the base64 again
+
+```bash
+$ cat runshellcode.py | base64 -w0; echo
+aW1wb3J0IGN0eXBlcwppbXBvcnQgbW1hcAoKIyBUaGlzIHNoZWxsY29kZSB3aWxsIHByaW50ICJIZWxsbyBXb3JsZCBmcm9tIHNoZWxsY29kZSEiCnNoZWxsY29kZSA9IGIiaGVkIFx4MGJceDgxNCRceDAxXHgwMVx4MDFceDAxSFx4Yjggc2hlbGxjb1BIXHhiOHJsZCBmcm9tUEhceGI4SGVsbG8gV29Qalx4MDFYalx4MDFfalx4MWNaSFx4ODlceGU2XHgwZlx4MDVYWFhYXHhjMyIKCiMgQWxsb2NhdGUgYW4gZXhlY3V0YWJsZSBtZW1vcnkgYW5kIHdyaXRlIHNoZWxsY29kZSB0byBpdAptZW0gPSBtbWFwLm1tYXAoCiAgICAtMSwKICAgIG1tYXAuUEFHRVNJWkUsCiAgICBtbWFwLk1BUF9TSEFSRUQsCiAgICBtbWFwLlBST1RfUkVBRCB8IG1tYXAuUFJPVF9XUklURSB8IG1tYXAuUFJPVF9FWEVDLAopCm1lbS53cml0ZShzaGVsbGNvZGUpCgojIEdldCBhY3R1YWxsIG1tYXAgYWRkcmVzcwojIEFzc3VtaW5nIHg2NAphZGRyID0gaW50LmZyb21fYnl0ZXMoY3R5cGVzLnN0cmluZ19hdChpZChtZW0pICsgMTYsIDgpLCAibGl0dGxlIikKCiMgQ3JlYXRlIHRoZSBmdW5jdGlvbgpmdW5jdHlwZSA9IGN0eXBlcy5DRlVOQ1RZUEUoY3R5cGVzLmNfdm9pZF9wKQpmbiA9IGZ1bmN0eXBlKGFkZHIpCgojIFJ1biBzaGVsbGNvZGUKZm4oKQoK
+```
+
+Then, we can execute this base64 encoded python program in a bash shell
+
+```bash
+$ echo "import base64; exec(base64.b64decode('aW1wb3J0IGN0eXBlcwppbXBvcnQgbW1hcAoKIyBUaGlzIHNoZWxsY29kZSB3aWxsIHByaW50ICJIZWxsbyBXb3JsZCBmcm9tIHNoZWxsY29kZSEiCnNoZWxsY29kZSA9IGIiaGVkIFx4MGJceDgxNCRceDAxXHgwMVx4MDFceDAxSFx4Yjggc2hlbGxjb1BIXHhiOHJsZCBmcm9tUEhceGI4SGVsbG8gV29Qalx4MDFYalx4MDFfalx4MWNaSFx4ODlceGU2XHgwZlx4MDVYWFhYXHhjMyIKCiMgQWxsb2NhdGUgYW4gZXhlY3V0YWJsZSBtZW1vcnkgYW5kIHdyaXRlIHNoZWxsY29kZSB0byBpdAptZW0gPSBtbWFwLm1tYXAoCiAgICAtMSwKICAgIG1tYXAuUEFHRVNJWkUsCiAgICBtbWFwLk1BUF9TSEFSRUQsCiAgICBtbWFwLlBST1RfUkVBRCB8IG1tYXAuUFJPVF9XUklURSB8IG1tYXAuUFJPVF9FWEVDLAopCm1lbS53cml0ZShzaGVsbGNvZGUpCgojIEdldCBhY3R1YWxsIG1tYXAgYWRkcmVzcwojIEFzc3VtaW5nIHg2NAphZGRyID0gaW50LmZyb21fYnl0ZXMoY3R5cGVzLnN0cmluZ19hdChpZChtZW0pICsgMTYsIDgpLCAibGl0dGxlIikKCiMgQ3JlYXRlIHRoZSBmdW5jdGlvbgpmdW5jdHlwZSA9IGN0eXBlcy5DRlVOQ1RZUEUoY3R5cGVzLmNfdm9pZF9wKQpmbiA9IGZ1bmN0eXBlKGFkZHIpCgojIFJ1biBzaGVsbGNvZGUKZm4oKQoK'))" | python3
+Hello World from shellcode!
+```
+ 	 
